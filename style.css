@@ -126,6 +126,14 @@ a:focus-visible, button:focus-visible, input:focus-visible {
     border-radius: 12px;
     opacity: 1;
     visibility: visible;
+    animation: cardSlideUp 0.7s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.leadership-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.15);
 }
 
 .leadership-card h4 {
@@ -1423,7 +1431,23 @@ button, a {
     width: 100%;
     display: flex;
     justify-content: center;
+    opacity: 0;
+    animation: sectionFadeIn 0.8s ease forwards;
+}
 
+.section:nth-child(even) {
+    animation-delay: 0.1s;
+}
+
+@keyframes sectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 .section-container {
     width: 100%;
@@ -1463,6 +1487,47 @@ button:active, .cta-glow:active {
 
 .bg-light {
     background: #f8fafc;
+    position: relative;
+    overflow: hidden;
+}
+
+.bg-light::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 150%;
+    height: 150%;
+    background: radial-gradient(circle, rgba(11, 99, 214, 0.03) 0%, transparent 70%);
+    animation: gradientShift 15s ease infinite;
+    pointer-events: none;
+}
+
+@keyframes gradientShift {
+    0%, 100% {
+        transform: translate(0, 0);
+    }
+    50% {
+        transform: translate(50px, -50px);
+    }
+}
+
+.why-card, .level-card, .service-card-full {
+    animation: cardSlideUp 0.7s ease forwards;
+    opacity: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.why-card:nth-child(1) { animation-delay: 0.1s; }
+.why-card:nth-child(2) { animation-delay: 0.2s; }
+.why-card:nth-child(3) { animation-delay: 0.3s; }
+.why-card:nth-child(4) { animation-delay: 0.4s; }
+.why-card:nth-child(5) { animation-delay: 0.5s; }
+.why-card:nth-child(6) { animation-delay: 0.6s; }
+
+.why-card:hover, .level-card:hover, .service-card-full:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
 }
 
 .section-header {
@@ -1619,6 +1684,24 @@ button:hover {
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    animation: cardSlideUp 0.7s ease forwards;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.admission-info:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+@keyframes cardSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .admission-info h3 {
