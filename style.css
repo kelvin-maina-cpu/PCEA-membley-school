@@ -3542,6 +3542,142 @@ nav a.active {
         }
     }
 }
+/* CHRISTIAN FOUNDATION - FIXED LAYOUT (NO OVERLAP) */
+.christian-bg {
+    position: relative !important;
+    min-height: 80vh !important;  /* FIXED HEIGHT */
+    overflow: hidden !important;
+    margin-bottom: 2rem !important;  /* SPACE BELOW */
+}
+
+.image-slideshow-bg {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;  /* LOW Z-INDEX */
+}
+
+.slideshow-image {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background-size: cover !important;
+    background-position: center !important;
+    opacity: 0 !important;
+    transition: opacity 1.5s ease-in-out !important;
+}
+
+.slideshow-image.active {
+    opacity: 1 !important;
+}
+
+.slideshow-overlay {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: rgba(0, 0, 0, 0.6) !important;
+    z-index: 2 !important;
+}
+
+/* CONTENT - PROPER Z-INDEX */
+.christian-bg > .container {
+    position: relative !important;
+    z-index: 10 !important;
+    background: rgba(0,0,0,0.3) !important;  /* SEMI-TRANSPARENT */
+    padding: 4rem 2rem !important;
+    border-radius: 20px !important;
+}
+
+/* FORCE SECTIONS TO NORMAL FLOW */
+#admissions, footer {
+    position: relative !important;
+    z-index: 1 !important;  /* BELOW CHRISTIAN */
+    margin-top: 2rem !important;
+}
+
+section {
+    position: relative !important;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .christian-bg {
+        min-height: 70vh !important;
+        margin-bottom: 1.5rem !important;
+    }
+    
+    .christian-bg > .container {
+        padding: 2rem 1.5rem !important;
+    }
+}
+/* FACILITIES & ACTIVITIES - MOBILE VIEW FIT */
+@media (max-width: 768px) {
+    /* CONTAINERS - FULL VIEWPORT WIDTH */
+    .facilities-grid,
+    .activities-grid,
+    .gallery-grid {
+        width: 100vw !important;
+        margin: 0 !important;
+        padding: 1rem !important;
+        box-sizing: border-box !important;
+        display: grid !important;
+        grid-template-columns: 1fr !important;  /* SINGLE COLUMN */
+        gap: 1.25rem !important;
+    }
+    
+    /* FACILITY/ACTIVITY CARDS */
+    .facility-card,
+    .activity-card,
+    .gallery-item {
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        min-height: 280px !important;
+        margin: 0 !important;
+        padding: 1.25rem !important;
+    }
+    
+    /* SECTIONS */
+    #facilities,
+    #activities,
+    #gallery {
+        padding: 2rem 0 !important;
+        margin: 0 !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* CONTAINER */
+    .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 1rem !important;
+        margin: 0 !important;
+    }
+    
+    /* SECTION HEADERS */
+    .section-header {
+        text-align: center !important;
+        margin-bottom: 1.5rem !important;
+        padding: 0 0.5rem !important;
+    }
+}
+
+/* EXTRA SMALL MOBILE */
+@media (max-width: 480px) {
+    .facility-card,
+    .activity-card {
+        min-height: 240px !important;
+        padding: 1rem !important;
+    }
+    
+    .section-header h2 {
+        font-
 
 
 

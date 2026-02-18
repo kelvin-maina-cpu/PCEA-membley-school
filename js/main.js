@@ -208,3 +208,32 @@ function initScrollAnimations() {
         });
     });
 }
+// IMAGE SLIDESHOW FOR CHRISTIAN SECTION
+function initChristianSlideshow() {
+    const images = document.querySelectorAll('.slideshow-image');
+    
+    if (images.length === 0) return;
+    
+    let currentIndex = 0;
+    
+    function showNextImage() {
+        // Hide current
+        images[currentIndex].classList.remove('active');
+        
+        // Next image
+        currentIndex = (currentIndex + 1) % images.length;
+        
+        // Show next
+        images[currentIndex].classList.add('active');
+    }
+    
+    // Start slideshow (3 sec per image)
+    setInterval(showNextImage, 3000);
+}
+
+// Add to DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+    // ... your existing code ...
+    initChristianSlideshow();  // ADD THIS LINE
+});
+
