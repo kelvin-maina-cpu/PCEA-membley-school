@@ -21,46 +21,77 @@
 
 </head>
 <body>
-    <nav class="navbar" id="navbar">
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="navbar" id="navbar">
         <div class="nav-container">
-            <!-- Compact Logo -->
-            <div class="logo">
-                <img src="media/image1.jpg" alt="PCEA Membley School" class="school-logo">
+            <a href="#home" class="logo">
+                <img src="media/image1.jpg" class="school-logo" alt="PCEA Membley School">
                 <div class="logo-text">
                     <h2>PCEA Membley School</h2>
-                    <span class="logo-tagline">Above and Beyond</span>
+                    <div class="logo-tagline">Christian • CBE</div>
                 </div>
-            </div>
-            
-            <!-- Desktop Menu -->
-            <ul class="nav-menu" id="nav-menu">
-                <li class="nav-item dropdown">
-                    <a href="#home" class="nav-link">Home ▾</a>
+            </a>
 
-                    <ul class="dropdown-menu">
-                        <li><a href="#journeySwipeContainer">Our Journey</a>
-</li>
-                    </ul>
-                </li>
-                <li><a href="#about" class="nav-link">About</a></li>
-                <li><a href="#academics" class="nav-link">Academics</a></li>
-                <li><a href="#facilities" class="nav-link">Facilities</a></li>
-                <li><a href="#admissions" class="nav-link cta">Admissions</a></li>
-                
-            </ul>
+            <nav id="nav-menu" class="nav-menu">
+                <a class="nav-link" href="#home">Home</a>
+                <a class="nav-link" href="#about">About us</a>
+                <a class="nav-link" href="#academics">Academics</a>
+                <a class="nav-link" href="#facilities">Facilities</a>
+                <a class="nav-link cta" href="#admissions">Admissions</a>
+            </nav>
 
-            <!-- Mobile Menu Toggle -->
-            <div class="nav-toggle" id="navToggle">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-actions">
+                <button class="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">🌙</span></button>
             </div>
         </div>
-    </nav>
+    </header>
+    <div class="mobile-header">
+        <img src="media/image1.jpg" class="mobile-logo">
+        <h2 class="nav-title">PCEA Memberly School</h2>
+        <button id="navToggle" class="hamburger">☰</button>
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme"><span class="theme-icon">🌙</span></button>
+    </div>
+
+    
+    <!-- Overlay -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Side Menu -->
+<div class="side-menu" id="sideMenu">
+
+    <!-- Close Button -->
+    <div class="menu-header">
+        <button class="close-btn" id="closeMenu">✕</button>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="menu-search">
+        <input type="text" placeholder="Search..." />
+        <button class="search-btn">🔍</button>
+    </div>
+
+    <!-- Navigation Links -->
+    <ul class="menu-links">
+        <li><a href="#home">Home</a></li>
+
+        <li class="has-dropdown">
+            <a href="#about">About us</a>
+            <span class="dropdown-icon">▾</span>
+        </li>
+
+        <li><a href="#academics" class="nav-link">Academics</a></li>
+        <li><a href="#facilities">Facilities</a></li>
+        <li><a href="#admissions" class="nav-link cta">Admissions</a></li>
+
+    </ul>
+
+</div>
+
 
 
 
     
+    <main id="main">
     <section id="home" class="hero premium-hero">
 
     <div class="hero-bg">
@@ -94,7 +125,6 @@
 
     </div>
 </section>
-
 
     <section id="about" class="section modern-about">
         <div class="container">
@@ -271,6 +301,7 @@
             </div>
         </div> 
     </section> 
+    </main>
 
 
     <section id="academics" class="section bg-light">
@@ -647,35 +678,14 @@
 
 
     <script type="module" src="js/main.js"></script>
-    <script src="hero-slider.js"></script>
     <div id="lightbox" class="lightbox">
         <span class="close-lightbox">&times;</span>
         <img id="lightbox-img" src="" alt="">
     </div>
-    <script>
-    const filterButtons = document.querySelectorAll(".filter-btn");
-    const galleryItems = document.querySelectorAll(".gallery-item");
+    <button id="backToTop" class="back-to-top" aria-label="Back to top">↑</button>
 
-    filterButtons.forEach(button => {
-        button.addEventListener("click", () => {
 
-            // Remove active class
-            filterButtons.forEach(btn => btn.classList.remove("active"));
-            button.classList.add("active");
 
-            const filter = button.getAttribute("data-filter");
-
-            galleryItems.forEach(item => {
-                if (filter === "all" || item.classList.contains(filter)) {
-                    item.style.display = "block";
-                } else {
-                    item.style.display = "none";
-                }
-            });
-
-        });
-    });
-    </script>
 
 
     

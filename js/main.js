@@ -12,7 +12,12 @@ import {
     initAboutTabs,
     initJourney,
     initHeroStats,
-    initSmoothScroll
+    initSmoothScroll,
+    initGalleryFilters,
+    initLightbox,
+    initSideMenuHandlers,
+    initMobileHeaderScroll
+    ,initBackToTop
 } from './ui-handlers.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,6 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
     initAboutTabs();
     initJourney();
+    initGalleryFilters();
+    initLightbox();
+    initSideMenuHandlers();
+    initMobileHeaderScroll();
+    initBackToTop();
     initSmoothScroll();
 });
 const faders = document.querySelectorAll('.fade-in');
@@ -60,7 +70,7 @@ const footerObserver = new IntersectionObserver(entries => {
 
 footerObserver.observe(footer);
 const sections = document.querySelectorAll("section, footer");
-const navLinks = document.querySelectorAll("nav a");
+const navLinks = document.querySelectorAll('.nav-menu a, .menu-links a, nav a');
 
 window.addEventListener("scroll", () => {
     let current = "";

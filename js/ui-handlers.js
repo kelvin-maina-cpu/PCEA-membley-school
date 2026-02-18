@@ -2,17 +2,20 @@
 // Mobile Navigation
 export const initNavigation = () => {
     const navToggle = document.getElementById('navToggle');
-    const navMenu = document.getElementById('nav-menu');
-    const navbar = document.getElementById('navbar');
-    
+    // site uses a side menu (`sideMenu`) and no top `nav-menu` id — accept either
+    const navMenu = document.getElementById('nav-menu') || document.getElementById('sideMenu');
+    const navbar = document.getElementById('navbar') || document.querySelector('.navbar') || document.querySelector('.mobile-header');
+
     if (!navToggle || !navMenu) return;
-    
+
     navToggle.addEventListener('click', () => {
         navToggle.classList.toggle('active');
         navMenu.classList.toggle('active');
+        // prevent page scroll when menu is open on mobile
+        document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
     });
-    
-    // Navbar scroll effect
+
+    // Navbar scroll / compact effect
     window.addEventListener('scroll', () => {
         if (navbar) {
             navbar.classList.toggle('scrolled', window.scrollY > 100);
@@ -174,23 +177,145 @@ export const initMagneticButtons = () => {
     });
 };
 export const initThemeToggle = () => {
-    const toggle = document.getElementById('themeToggle');
-    if (!toggle) return;
-
-    toggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark');
-
-        const isDark = document.body.classList.contains('dark');
-        toggle.textContent = isDark ? "☀️" : "🌙";
-
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    // Attach to any theme toggle button(s). Prefer element with id `themeToggle`, fall back to `.theme-toggle`.
+    const toggles = [];
+    const primary = document.getElementById('themeToggle');
+    if (primary) toggles.push(primary);
+    document.querySelectorAll('.theme-toggle').forEach(el => {
+        if (!toggles.includes(el)) toggles.push(el);
     });
+    if (!toggles.length) return;
+
+    const setIcons = (isDark) => {
+        toggles.forEach(t => {
+            const icon = t.querySelector('.theme-icon');
+            if (icon) icon.textContent = isDark ? '☀️' : '🌙';
+            else t.textContent = isDark ? '☀️' : '🌙';
+        });
+    };
+
+    const toggleHandler = () => {
+        document.body.classList.toggle('dark');
+        const isDark = document.body.classList.contains('dark');
+        setIcons(isDark);
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    };
+
+    toggles.forEach(t => t.addEventListener('click', (e) => {
+        // small animation class to allow CSS transitions
+        const icon = t.querySelector('.theme-icon');
+        if (icon) {
+            icon.classList.add('animating');
+            setTimeout(() => icon.classList.remove('animating'), 420);
+        }
+        toggleHandler(e);
+    }));
 
     // Load saved theme
     if (localStorage.getItem('theme') === 'dark') {
         document.body.classList.add('dark');
-        toggle.textContent = "☀️";
+        setIcons(true);
     }
+};
+
+// Gallery filters moved from inline script
+export const initGalleryFilters = () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    if (!filterButtons.length || !galleryItems.length) return;
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            const filter = button.getAttribute('data-filter');
+
+            galleryItems.forEach(item => {
+                if (filter === 'all' || item.classList.contains(filter)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+};
+
+// Lightbox for gallery items
+export const initLightbox = () => {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.close-lightbox');
+    const galleryImgs = document.querySelectorAll('.gallery-item img');
+
+    if (!lightbox || !lightboxImg || !closeBtn || !galleryImgs.length) return;
+
+    galleryImgs.forEach(img => {
+        img.addEventListener('click', () => {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+            document.body.classList.add('no-scroll');
+        });
+    });
+
+    const closeLightbox = () => {
+        lightbox.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+        lightboxImg.src = '';
+    };
+
+    closeBtn.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+};
+
+// Side menu overlay and close handlers
+export const initSideMenuHandlers = () => {
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('overlay');
+    const closeMenu = document.getElementById('closeMenu');
+    const navToggle = document.getElementById('navToggle');
+    if (!sideMenu || !overlay || !navToggle) return;
+
+    // Close handlers
+    closeMenu?.addEventListener('click', () => {
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    });
+
+    overlay?.addEventListener('click', () => {
+        sideMenu.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.classList.remove('no-scroll');
+    });
+
+    // keep overlay state in sync when toggle is used (initNavigation already toggles active class)
+    navToggle.addEventListener('click', () => {
+        if (sideMenu.classList.contains('active')) overlay.classList.add('active');
+        else overlay.classList.remove('active');
+    });
+};
+
+// Mobile header scroll color helpers (moved from inline script)
+export const initMobileHeaderScroll = () => {
+    const header = document.querySelector('.mobile-header');
+    if (!header) return;
+
+    window.addEventListener('scroll', () => {
+        const title = document.querySelector('.nav-title');
+        const hamb = document.querySelector('.hamburger');
+
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+            if (title) title.style.color = 'white';
+            if (hamb) hamb.style.color = 'white';
+        } else {
+            header.classList.remove('scrolled');
+            if (title) title.style.color = '#003366';
+            if (hamb) hamb.style.color = '#003366';
+        }
+    });
 };
 
 
@@ -316,17 +441,34 @@ export const initHeroStats = () => {
 
 // Smooth Scrolling
 export const initSmoothScroll = () => {
+    const header = document.querySelector('.navbar') || document.querySelector('.mobile-header');
+    const headerHeight = header ? header.offsetHeight : 70;
+
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', (e) => {
+            const href = anchor.getAttribute('href');
+            if (!href || href === '#') return;
+            const target = document.querySelector(href);
+            if (!target) return;
             e.preventDefault();
-            const target = document.querySelector(anchor.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+
+            const targetY = target.getBoundingClientRect().top + window.scrollY - headerHeight - 12;
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
         });
     });
+};
+
+export const initBackToTop = () => {
+    const btn = document.getElementById('backToTop');
+    if (!btn) return;
+
+    const toggleVisibility = () => {
+        if (window.scrollY > 400) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    };
+
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.addEventListener('scroll', toggleVisibility);
+    toggleVisibility();
 };
 
