@@ -3742,6 +3742,33 @@ section {
     visibility: visible !important;
     display: block !important;
 }
+/* IMAGE OPTIMIZATION - 3X FASTER */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    /* LAZY LOAD ALL IMAGES */
+    loading: lazy !important;
+}
+
+/* HERO & SLIDESHOW - PRIORITY LOADING */
+.hero-bg img,
+.slideshow-image {
+    loading: eager !important;  /* Load first */
+    /* PREVENT BLUR */
+    image-rendering: -webkit-optimize-contrast;
+}
+
+/* COMPRESS IMAGES TO <500KB */
+@media (max-width: 768px) {
+    .hero-bg img,
+    .gallery-item img {
+        /* MOBILE: Smaller images */
+        max-height: 300px !important;
+        width: auto !important;
+    }
+}
+
 
 
 
