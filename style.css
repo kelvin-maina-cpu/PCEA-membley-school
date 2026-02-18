@@ -289,16 +289,7 @@ body.no-scroll {
 button, a {
     min-height: 44px;
 }
-@media (max-width: 768px) {
-    .hero-bg img {
-        filter: none;
-        transform: scale(1.05);
-    }
 
-    #particles {
-        display: none;
-    }
-}
 
 /* Modern navbar: compact, elevated, variable-driven */
 .navbar {
@@ -417,6 +408,80 @@ button, a {
     position: relative;
     white-space: nowrap;
 }
+.hero {
+    background: #000;
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+
+.hero h1 {
+    background: linear-gradient(90deg, #ffffff, #cce7ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;              /* ✅ FIXED: Above base */
+}
+
+.hero-bg img {
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    top: -5%;
+    left: -5%;
+    object-fit: cover;
+    opacity: 0;
+    filter: blur(8px);
+    transform: scale(1.1);
+    transition: opacity 1.8s ease-in-out, transform 8s ease-in-out, filter 1.5s ease-in-out;
+    will-change: transform, opacity;
+}
+
+.hero-bg img.active {
+    opacity: 1 !important;
+    filter: blur(0px) !important;     /* ✅ FIXED: Sharp */
+    z-index: 2;                       /* ✅ FIXED: Above others */
+}
+
+/* OVERLAY - Above images */
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
+    z-index: 3;                       /* ✅ FIXED: Above images */
+}
+
+/* CONTENT - TOP LAYER */
+.hero-content {
+    position: relative;
+    z-index: 10 !important;           /* ✅ FIXED: Above everything */
+}
+
+/* GRADIENT BOTTOM */
+.hero::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: linear-gradient(to bottom, transparent, white);
+    z-index: 4;
+}
+
 
 .nav-link::before {
     content: '';
@@ -1228,123 +1293,10 @@ button, a {
         font-size: 0.7rem;
     }
 
-.hero {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-}
-.hero h1 {
-    background: linear-gradient(90deg, #ffffff, #cce7ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
 
 
-.hero-bg {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 0;
-}
 
 
-.hero-bg img {
-    position: absolute;
-    width: 110%;              /* extra width for parallax */
-    height: 110%;             /* extra height for parallax */
-    object-fit: cover;
-    top: -5%;
-    left: -5%;
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(1.1);
-    transition: 
-        opacity 1.8s ease-in-out,
-        transform 8s ease-in-out,
-        filter 1.5s ease-in-out;
-    will-change: transform, opacity;
-        .stat-card {
-        backdrop-filter: blur(10px);
-        background: rgba(255,255,255,0.1);
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-
-}.hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,0.6),
-        rgba(0,0,0,0.4)
-    );
-    z-index: 1;
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-
-
-/* Active image */
-.hero-bg img.active {
-    opacity: 1;
-    filter: blur(0px);
-    transform: scale(1.1);
-}
-
-.hero::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 150px;
-    background: linear-gradient(to bottom, transparent, white);
-}
-
-.hero-title {
-    font-size: clamp(3rem, 8vw, 5rem);
-    font-weight: 800;
-    letter-spacing: -1px;
-    text-shadow: 0 8px 30px rgba(0,0,0,0.4);
-}
-.hero-subtitle {
-    font-size: clamp(1.3rem, 3vw, 2rem);
-    opacity: 0.9;
-    margin-bottom: 2rem;
-}
-.hero-overlay {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        rgba(0,0,0,0.6),
-        rgba(0,0,0,0.6)
-    );
-    z-index: 1;
-}
-.hero-stats {
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-@media (max-width: 768px) {
-    .hero {
-        flex-direction: column;
-        text-align: center;
-        padding: 100px 20px 60px;
-    }
-}
 @media (max-width: 992px) {
     .cards {
         grid-template-columns: repeat(2, 1fr);
@@ -1449,10 +1401,7 @@ button, a {
 }
 
 
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
+
 
 .floating-shapes span {
     position: absolute;
@@ -1489,12 +1438,6 @@ button, a {
     }
 }
 
-.hero-subtitle {
-    margin-top: 20px;
-    opacity: 0;
-    animation: fadeIn 1.5s ease forwards;
-    animation-delay: 1.2s;
-}
 
 @keyframes fadeIn {
     to { opacity: 1; }
@@ -3742,32 +3685,40 @@ section {
     visibility: visible !important;
     display: block !important;
 }
-/* IMAGE OPTIMIZATION - 3X FASTER */
+/* ULTRA-FAST IMAGES */
 img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    /* LAZY LOAD ALL IMAGES */
-    loading: lazy !important;
+    /* NATIVE LAZY LOADING */
+    loading: lazy;
+    /* PRELOAD HERO */
+    content-visibility: auto;
 }
 
-/* HERO & SLIDESHOW - PRIORITY LOADING */
+/* HERO - IMMEDIATE LOAD */
 .hero-bg img,
-.slideshow-image {
-    loading: eager !important;  /* Load first */
-    /* PREVENT BLUR */
+.hero-logo,
+.school-logo {
+    loading: eager !important;  /* Load instantly */
+    /* FAST RENDER */
     image-rendering: -webkit-optimize-contrast;
+    will-change: auto;
 }
 
-/* COMPRESS IMAGES TO <500KB */
+/* GALLERY - PRIORITY */
+.gallery-item img {
+    loading: lazy;
+    /* PLACEHOLDER */
+    background: #f3f4f6;
+}
+
+/* MOBILE OPTIMIZATION */
 @media (max-width: 768px) {
-    .hero-bg img,
-    .gallery-item img {
-        /* MOBILE: Smaller images */
-        max-height: 300px !important;
+    .hero-bg img {
+        height: 100vh !important;
         width: auto !important;
     }
 }
+
+
 
 
 
