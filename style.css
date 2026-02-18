@@ -3680,6 +3680,68 @@ section {
         font-size: 1.5rem !important;
     }
 }
+/* FOOTER MAP - Ruiru Location */
+.map-container {
+    width: 100% !important;
+    height: 200px !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    margin: 1rem 0 !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+    border: 2px solid rgba(255,255,255,0.2) !important;
+}
+
+#footer-map {
+    filter: grayscale(20%) contrast(1.1) !important;
+    transition: all 0.3s ease !important;
+}
+
+#footer-map:hover {
+    filter: grayscale(0%) contrast(1.2) brightness(1.05) !important;
+    transform: scale(1.02) !important;
+}
+
+/* MOBILE MAP */
+@media (max-width: 768px) {
+    .map-container {
+        height: 180px !important;
+        margin: 0.75rem 0 !important;
+    }
+}
+/* FOOTER MAP - 100% WORKING */
+.map-container {
+    width: 100% !important;
+    height: 220px !important;
+    margin: 1rem 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+}
+
+.map-container iframe {
+    width: 100% !important;
+    height: 220px !important;
+    border: none !important;
+    border-radius: 12px !important;
+    display: block !important;
+    min-height: 200px !important;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .map-container,
+    .map-container iframe {
+        height: 200px !important;
+    }
+}
+
+/* DEBUG - FORCE VISIBILITY */
+#footer-map,
+.map-container {
+    opacity: 1 !important;
+    visibility: visible !important;
+    display: block !important;
+}
 
 
 
