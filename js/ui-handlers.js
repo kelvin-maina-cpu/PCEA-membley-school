@@ -8,12 +8,8 @@ export const initNavigation = () => {
 
     if (!navToggle || !navMenu) return;
 
-    navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        navMenu.classList.toggle('active');
-        // prevent page scroll when menu is open on mobile
-        document.body.classList.toggle('no-scroll', navMenu.classList.contains('active'));
-    });
+    // Note: Mobile menu opening/closing is handled by initMobileMenu() in main.js
+    // This function focuses on desktop navigation and scroll effects
 
     // Navbar scroll / compact effect
     window.addEventListener('scroll', () => {
@@ -216,30 +212,6 @@ export const initThemeToggle = () => {
         document.body.classList.add('dark');
         setIcons(true);
     }
-};
-
-// Gallery filters moved from inline script
-export const initGalleryFilters = () => {
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    if (!filterButtons.length || !galleryItems.length) return;
-
-    filterButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            const filter = button.getAttribute('data-filter');
-
-            galleryItems.forEach(item => {
-                if (filter === 'all' || item.classList.contains(filter)) {
-                    item.style.display = 'block';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        });
-    });
 };
 
 // Lightbox for gallery items
@@ -490,4 +462,177 @@ export const initBackToTop = () => {
     window.addEventListener('scroll', toggleVisibility);
     toggleVisibility();
 };
+
+// Gallery Filtering
+export const initGalleryFilters = () => {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    if (!filterButtons.length || !galleryItems.length) return;
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Remove active class from all buttons
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            const filterValue = button.getAttribute('data-filter');
+
+            galleryItems.forEach(item => {
+                if (filterValue === 'all') {
+                    item.style.display = 'block';
+                    setTimeout(() => {
+                        item.style.opacity = '1';
+                        item.style.transform = 'scale(1)';
+                    }, 10);
+                } else {
+                    const itemCategory = item.getAttribute('data-category');
+                    if (itemCategory === filterValue) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'scale(1)';
+                        }, 10);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.8)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                }
+            });
+        });
+    });
+
+    // Initialize gallery items with smooth transitions
+    galleryItems.forEach(item => {
+        item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    });
+};
+
+// Lazy Loading for Images
+export const initLazyLoading = () => {
+    const images = document.querySelectorAll('img[loading="lazy"]');
+
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.classList.add('loaded');
+                    observer.unobserve(img);
+                }
+            });
+        });
+
+        images.forEach(img => imageObserver.observe(img));
+    } else {
+        // Fallback for browsers without IntersectionObserver
+        images.forEach(img => {
+            img.classList.add('loaded');
+        });
+    }
+};
+
+// Video Modal (for future video integration)
+export const initVideoModal = () => {
+    const playButtons = document.querySelectorAll('.play-button');
+    const modal = document.getElementById('videoModal');
+    const closeBtn = document.querySelector('.close-modal');
+
+    if (!playButtons.length || !modal) return;
+
+    // Open modal when play button is clicked
+    playButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        });
+    });
+
+    // Close modal when close button is clicked
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+    }
+
+    // Close modal when clicking outside the modal content
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+
+    // Close modal on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'block') {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    });
+};
+
+// Editable Announcements
+export const initEditableAnnouncements = () => {
+    const announcementCards = document.querySelectorAll('.news-card[data-id]');
+
+    announcementCards.forEach(card => {
+        const id = card.getAttribute('data-id');
+        const editableElements = card.querySelectorAll('[contentEditable="true"]');
+
+        // Load saved content
+        editableElements.forEach((element, index) => {
+            const key = `${id}-element-${index}`;
+            const savedContent = localStorage.getItem(key);
+            if (savedContent) {
+                element.textContent = savedContent;
+            }
+        });
+
+        // Save content on input
+        editableElements.forEach((element, index) => {
+            element.addEventListener('input', () => {
+                const key = `${id}-element-${index}`;
+                localStorage.setItem(key, element.textContent);
+            });
+        });
+    });
+};
+
+// Floating Social Media Widget
+export const initFloatingSocialWidget = () => {
+    const floatingWidget = document.getElementById('floatingSocial');
+    const closeBtn = document.getElementById('closeFloatingSocial');
+
+    if (!floatingWidget) return;
+
+    // Show widget after scrolling down
+    let hasShown = false;
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 500 && !hasShown) {
+            floatingWidget.classList.add('visible');
+            hasShown = true;
+        }
+    });
+
+    // Close widget functionality
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            floatingWidget.classList.remove('visible');
+        });
+    }
+
+    // Auto-hide after 10 seconds if not interacted with
+    setTimeout(() => {
+        if (floatingWidget.classList.contains('visible')) {
+            floatingWidget.classList.remove('visible');
+        }
+    }, 10000);
+};
+
 

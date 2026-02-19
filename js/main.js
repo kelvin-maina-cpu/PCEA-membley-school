@@ -15,7 +15,11 @@ import {
     initGalleryFilters,
     initLightbox,
     initMobileHeaderScroll,
-    initBackToTop
+    initBackToTop,
+    initLazyLoading,
+    initVideoModal,
+    initEditableAnnouncements,
+    initFloatingSocialWidget
 } from './ui-handlers.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -35,6 +39,10 @@ document.addEventListener('DOMContentLoaded', () => {
     initMobileHeaderScroll();
     initBackToTop();
     initSmoothScroll();
+    initLazyLoading();
+    initVideoModal();
+    initEditableAnnouncements();
+    initFloatingSocialWidget();
     
     // OUR CUSTOM HANDLERS
     initMobileMenu();
@@ -75,6 +83,12 @@ function initMobileMenu() {
     
     if (closeBtn) closeBtn.addEventListener('click', closeMenu);
     if (overlay) overlay.addEventListener('click', closeMenu);
+    
+    // Close menu when navigation link is clicked
+    const navLinks = sideMenu?.querySelectorAll('a[href^="#"]');
+    navLinks?.forEach(link => {
+        link.addEventListener('click', closeMenu);
+    });
     
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && sideMenu?.classList.contains('active')) {
